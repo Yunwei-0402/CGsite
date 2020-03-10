@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game detail</title>
+</head>
+<body>
+<h1>{{ game.game_name }}</h1>
+
+
+{% if request.session.user_name %}
+    <button type="submit" class="btn btn-primary float-right" onclick="addcollection({{ game.game_id }});">Add to my collection</button>
+{% else %}
+    <h3>You haven't login to GameCollection! Please login to add game to your game collection!</h3>>
+{% endif %}
+
+<a href="{% url 'GCapp:main' %}">View my collection</a>
+
+<a href="{% url 'GCapp:index' %}">Return to index page</a>
+
+<h3>Game Introduction</h3>
+<p>
+    {{ game.game_introduction }}
+</p>
+<h3>Game Rule</h3>
+<p>
+    {{ game.game_rules}}
+</p>
+<h3>Game Purchase</h3>
+<p>
+    {{ game.game_purchase}}
+</p>
+<h3>Game Score</h3>
+<p>
+    {{ game.game_score}}
+</p>
+
+<form action="{% url 'GCapp:game' game.pk %}" method="post" class="comment-form">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-4">
+      <label for="{{ form.comment_publisher.id_for_label }}">名字：</label><br>
+<input type="text" name="comment_publisher">
+<br>
+      {{ form.name }}
+      {{ form.name.errors }}
+    </div>
+    <div class="col-md-12">
+      <label for="{{ form.comment_text.id_for_label }}">评论：</label><br>
+<input type="textarea" name="comment_text">
+<br>
+      {{ form.text }}
+      {{ form.text.errors }}
+      <button type="submit" class="comment-btn">发表</button>
+    </div>
+  </div>    <!-- row -->
+</form>
+
+<ul class="comment-list list-unstyled">
+  {% for comment in comment_list %}
+  <li class="comment-item">
+    <span class="nickname">{{ comment.comment_publisher }}</span>
+    <time class="submit-date">{{ comment.comment_date }}</time>
+    <div class="text">
+      {{ comment.comment_text }}
+    </div>
+  </li>
+  {% empty %}
+  暂无评论
+  {% endfor %}
+</ul>
+
+
+
+</body>
+
+<script type="text/javascript" src="{% static 'GCapp/js/add.js' %}"></script>
+<script type="text/javascript" src="{% static 'GCapp/js/jquery-1.11.3.min.js' %}"></script>
+<script>
+    $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+</script>
+
+</html>

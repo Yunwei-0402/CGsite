@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>community</title>
+</head>
+<body>
+<h1>This is the community page!</h1>
+<h1>{{ community.community_name }}</h1>
+
+{% if post_list %}
+    <ul>
+    {% for post in post_list %}
+        <li><a href="{% url 'GCapp:post' post.post_id %}">{{ post.post_title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No post in this community</p>
+{% endif %}
+</body>
+</html>

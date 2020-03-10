@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search results</title>
+</head>
+<body>
+{% if error_msg %}
+    <p>{{ error_msg }}</p>
+{% endif %}
+
+<h1> Search Results
+</h1>
+{% for game in game_list %}
+  <div>
+  <li><a href="{% url 'GCapp:game' game.game_id %}">{{ game.game_name }}</a></li>
+  </div>
+{% empty %}
+  <div class="no-game">
+    没有搜索到符合条件的游戏
+  </div>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<p><a href='{% url 'GCapp:login' %}'>Login</a></p>
+
+<form method="post" action="/GCapp/results/">
+  {% csrf_token %}
+  <input type="search" class = form-control id = 'gamename' name = 'gamename' placeholder="Search for games" required>
+  <button type="submit">Search</button>
+</form>
+
+<h1>RECENT GAME NEWS</h1>
+{% if latest_news_list %}
+    <ul>
+    {% for news in latest_news_list %}
+        <li><a href="{% url 'GCapp:detail' news.news_id %}">{{ news.news_title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No news is available.</p>
+{% endif %}
+
+<h1>GAMES RECOMMEND FOR YOU</h1>
+{% if recommend_game_list %}
+    <ul>
+    {% for game in recommend_game_list %}
+        <li><a href="{% url 'GCapp:game' game.game_id%}">{{ game.game_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No game recommendation is available.</p>
+{% endif %}
+
+<h1>WALK THROUGH COMMUNITY</h1>
+{% if community_list %}
+    <ul>
+    {% for community in community_list %}
+        <li><a href="{% url 'GCapp:community' community.community_id%}">{{ community.community_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No community is available.</p>
+{% endif %}
+
+</body>
+</html>

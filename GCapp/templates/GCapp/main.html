@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+
+{% if request.session.user_name %}
+    <h1>{{ request.session.user_name }}! Login successful!</h1>
+{% else %}
+    <h1>You haven't login to GameCollection! Please login to view your game collection!</h1>>
+    {% endif %}
+<p>
+    <a href='{% url 'GCapp:logout' %}'>Logout</a>
+</p>
+
+<form method="post" action="/GCapp/results/">
+  {% csrf_token %}
+  <input type="search" class = form-control id = 'gamename' name = 'gamename' placeholder="Search for games" required>
+  <button type="submit">Search</button>
+</form>
+
+<h3>My game collection</h3>
+{% if game_collection_list %}
+    <ul>
+    {% for game in game_collection_list %}
+        <li><a href="{% url 'GCapp:game' game.collection_gameid.game_id %}">{{ game.collection_game }}</a></li>
+        <button type="submit" class="btn btn-primary float-right" onclick="deletecollection({{ game.collection_gameid.game_id }});">Delete</button>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No game in your collection.</p>
+{% endif %}
+
+<h3>Game suggested according to your tag</h3>
+{% if recommend_game_list %}
+    <ul>
+    {% for game in recommend_game_list %}
+        <li><a href="{% url 'GCapp:game' game.game_id %}">{{ game.game_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No game recommendation</p>
+{% endif %}
+
+</body>
+<script type="text/javascript" src="{% static 'GCapp/js/delete.js' %}"></script>
+<script type="text/javascript" src="{% static 'GCapp/js/jquery-1.11.3.min.js' %}"></script>
+<script>
+    $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+</script>
+</html>
