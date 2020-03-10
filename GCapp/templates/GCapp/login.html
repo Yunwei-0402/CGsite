@@ -16,9 +16,7 @@
             <div class="col">
               <form class="form-login" action="/GCapp/login/" method="post">{% csrf_token %}
 
-                  {% if login_form.captcha.errors %}
-                    <div class="alert alert-warning">{{ login_form.captcha.errors }}</div>
-                  {% elif message %}
+                  {% if message %}
                     <div class="alert alert-warning">{{ message }}</div>
                   {% endif %}
 
