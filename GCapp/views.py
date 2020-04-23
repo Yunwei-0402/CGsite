@@ -162,7 +162,8 @@ def main(request):
     recommend_game_list = Games.objects.filter(game_type=tag.user_tags)
     #print(recommend_game_list)
     context = {'game_collection_list': game_collection_list,
-               'recommend_game_list': recommend_game_list}#传入上下文
+               'recommend_game_list': recommend_game_list
+                }#传入上下文
     return render(request, 'GCapp/main.html', context)
 
 def game(request, collection_gameid):
